@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Search, Filter, MoreVertical, Edit2, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Search, Filter, Edit2, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Inventory = () => {

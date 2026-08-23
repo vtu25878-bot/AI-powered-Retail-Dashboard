@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 import { TrendingUp, DollarSign, ShoppingBag, Users, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
 
 const Dashboard = () => {
   const [stats, setStats] = useState<any>(null);
@@ -59,7 +58,7 @@ const Dashboard = () => {
       className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden group"
     >
       <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
-        {React.cloneElement(icon as React.ReactElement, { size: 100 })}
+        {React.cloneElement(icon as React.ReactElement, { size: 100 } as any)}
       </div>
       <div className="flex justify-between items-start mb-4 relative z-10">
         <div>

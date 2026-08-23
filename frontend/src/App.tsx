@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -30,6 +30,14 @@ const AppLayout = ({ children, onLogout }: { children: React.ReactNode, onLogout
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Auto-login for recruiters if URL has ?demo=true
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('demo') === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const handleLogout = () => {
     setIsAuthenticated(false);
