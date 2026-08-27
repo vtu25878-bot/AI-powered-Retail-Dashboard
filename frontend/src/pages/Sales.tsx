@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Download, Filter, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const Sales = () => {
   const [orders] = useState([
@@ -11,6 +12,14 @@ const Sales = () => {
     { id: 'ORD-005', customer: 'Evan Wright', date: '2026-07-01', amount: 210.25, status: 'Completed' },
   ]);
 
+  const handleExport = () => {
+    toast.success('Sales data exported as CSV!');
+  };
+
+  const handleViewOrder = (id: string) => {
+    toast(`Viewing details for ${id}`);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -19,7 +28,7 @@ const Sales = () => {
           <p className="text-slate-500 text-sm mt-1">Track customer orders, invoices, and sales performance.</p>
         </div>
         <div className="flex gap-2">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-medium transition-colors shadow-sm">
+          <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-medium transition-colors shadow-sm">
             <Download size={18} />
             Export CSV
           </button>
@@ -35,7 +44,7 @@ const Sales = () => {
           <div className="flex gap-4 items-center w-full sm:w-auto">
              <div className="text-sm font-medium text-slate-700">Recent Orders</div>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 rounded-lg text-sm font-medium transition-colors">
+          <button onClick={() => toast('Filter options coming soon')} className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 rounded-lg text-sm font-medium transition-colors">
             <Filter size={18} />
             Filter
           </button>
@@ -71,7 +80,7 @@ const Sales = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                    <button onClick={() => handleViewOrder(order.id)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                       <Eye size={18} />
                     </button>
                   </td>

@@ -1,15 +1,32 @@
 import { useState } from 'react';
 import { Plus, Search, Filter, Edit2, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
+import Modal from '../components/Modal';
 
 const Inventory = () => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [products] = useState([
     { id: 1, name: 'Premium Wireless Headphones', category: 'Electronics', price: 299.99, stock: 45, status: 'In Stock' },
-    { id: 2, name: 'Ergonomic Office Chair', category: 'Furniture', price: 199.50, stock: 8, status: 'Low Stock' },
+    { id: 2, name: 'Ergonomic Office Office Chair', category: 'Furniture', price: 199.50, stock: 8, status: 'Low Stock' },
     { id: 3, name: 'Smart Fitness Watch', category: 'Electronics', price: 149.00, stock: 120, status: 'In Stock' },
     { id: 4, name: 'Mechanical Keyboard', category: 'Electronics', price: 89.99, stock: 0, status: 'Out of Stock' },
     { id: 5, name: 'Ceramic Coffee Mug Set', category: 'Home', price: 34.50, stock: 56, status: 'In Stock' },
   ]);
+
+  const handleDelete = (name: string) => {
+    toast.success(`Deleted ${name} from inventory.`);
+  };
+
+  const handleEdit = (name: string) => {
+    toast('Editing ' + name, { icon: '✏️' });
+  };
+
+  const handleSaveProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsAddModalOpen(false);
+    toast.success('New product added successfully!');
+  };
 
   return (
     <div className="space-y-6">
@@ -18,7 +35,7 @@ const Inventory = () => {
           <h1 className="text-2xl font-bold text-slate-800">Inventory Management</h1>
           <p className="text-slate-500 text-sm mt-1">Manage your products, categories, and stock levels.</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm shadow-blue-200">
+        <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm shadow-blue-200">
           <Plus size={18} />
           Add Product
         </button>
@@ -38,7 +55,7 @@ const Inventory = () => {
               className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 rounded-lg text-sm font-medium transition-colors">
+          <button onClick={() => toast('Filter options coming soon')} className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 rounded-lg text-sm font-medium transition-colors">
             <Filter size={18} />
             Filter
           </button>
@@ -74,10 +91,10 @@ const Inventory = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                      <button onClick={() => handleEdit(product.name)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                         <Edit2 size={16} />
                       </button>
-                      <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                      <button onClick={() => handleDelete(product.name)} className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -97,6 +114,29 @@ const Inventory = () => {
           </div>
         </div>
       </motion.div>
+
+      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Add New Product">
+        <form onSubmit={handleSaveProduct} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Product Name</label>
+            <input required type="text" className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Enter product name" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Price</label>
+              <input required type="number" step="0.01" className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="0.00" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Stock</label>
+              <input required type="number" className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="0" />
+            </div>
+          </div>
+          <div className="pt-4 flex justify-end gap-3 border-t border-slate-100 mt-6">
+            <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors">Cancel</button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">Save Product</button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

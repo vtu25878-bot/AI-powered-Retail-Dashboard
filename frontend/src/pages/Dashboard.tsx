@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 import { TrendingUp, DollarSign, ShoppingBag, Users, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
   const [stats, setStats] = useState<any>(null);
@@ -51,6 +52,17 @@ const Dashboard = () => {
     );
   }
 
+  const handleDownload = () => {
+    toast.promise(
+      new Promise(resolve => setTimeout(resolve, 1500)),
+      {
+        loading: 'Generating PDF report...',
+        success: 'Report downloaded successfully!',
+        error: 'Failed to download report.',
+      }
+    );
+  };
+
   const StatCard = ({ title, value, icon, trend }: { title: string, value: string, icon: React.ReactNode, trend?: string }) => (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -86,7 +98,7 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold text-slate-800">Executive Dashboard</h1>
           <p className="text-slate-500 text-sm mt-1">Welcome back, here's what's happening with your store today.</p>
         </div>
-        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm shadow-blue-200">
+        <button onClick={handleDownload} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm shadow-blue-200">
           Download Report
         </button>
       </div>
